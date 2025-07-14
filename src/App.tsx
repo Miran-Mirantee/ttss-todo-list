@@ -8,13 +8,13 @@ function App() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // fetch("https://jsonplaceholder.typicode.com/todos?_limit=10")
-    fetch("https://jsonplaceholder.typicode.com/todos1230?_limit=10")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Server error: ${response.status}`);
+    // fetch("https://jsonplaceholder.typicode.com/this_endpoint_doesnt_exist") // for testing error handling
+    fetch("https://jsonplaceholder.typicode.com/todos?_limit=10")
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Server error: ${res.status}`);
         }
-        return response.json();
+        return res.json();
       })
       .then(setTodoData)
       .catch((err) => setError(err.message))
@@ -24,10 +24,6 @@ function App() {
   // useEffect(() => {
   //   console.log(todoData);
   // }, [todoData]);
-
-  useEffect(() => {
-    console.log(error);
-  }, [error]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">

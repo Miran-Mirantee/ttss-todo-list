@@ -16,6 +16,24 @@ function Todo({
   const [newTodoTitle, setNewTodoTitle] = useState("");
 
   const toggleDone = (id: number) => {
+    fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        completed: !todos.find((todo) => todo.id === id)?.completed,
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Server error: ${res.status}`);
+        }
+        return res.json();
+      })
+      .catch((err) => {
+        console.error("Error toggling todo:", err);
+      });
     setTodos((prev) =>
       prev.map((todo) =>
         todo.id === id ? { ...todo, completed: !todo.completed } : todo
@@ -24,10 +42,38 @@ function Todo({
   };
 
   const deleteTodo = (id: number) => {
+    fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
+      method: "DELETE",
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Server error: ${res.status}`);
+        }
+        return res.json();
+      })
+      .catch((err) => {
+        console.error("Error deleting todo:", err);
+      });
     setTodos((prev) => prev.filter((todo) => todo.id !== id));
   };
 
   const editTodo = (id: number, newTitle: string) => {
+    fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title: newTitle }),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Server error: ${res.status}`);
+        }
+        return res.json();
+      })
+      .catch((err) => {
+        console.error("Error editing todo:", err);
+      });
     setTodos((prev) =>
       prev.map((todo) => (todo.id === id ? { ...todo, title: newTitle } : todo))
     );
@@ -36,15 +82,32 @@ function Todo({
   const handleAddTodo = () => {
     const title = newTodoTitle.trim();
     if (!title) return;
-    setTodos((prev) => [
-      ...prev,
-      {
-        id: prev.length ? Math.max(...prev.map((t) => t.id)) + 1 : 1,
-        userId: 1,
-        title,
-        completed: false,
+
+    const newTodo = {
+      id: todos.length ? Math.max(...todos.map((t) => t.id)) + 1 : 1,
+      userId: 1,
+      title,
+      completed: false,
+    };
+
+    fetch("https://jsonplaceholder.typicode.com/todos", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    ]);
+      body: JSON.stringify(newTodo),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Server error: ${res.status}`);
+        }
+        return res.json();
+      })
+      .catch((err) => {
+        console.error("Error adding todo:", err);
+      });
+
+    setTodos((prev) => [...prev, newTodo]);
     setNewTodoTitle("");
   };
 
