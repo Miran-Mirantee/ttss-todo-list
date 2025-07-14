@@ -1,7 +1,8 @@
 type TodoType = {
   id: number;
-  text: string;
-  done: boolean;
+  userId: number;
+  title: string;
+  completed: boolean;
 };
 
 export type { TodoType };

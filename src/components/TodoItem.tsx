@@ -13,10 +13,10 @@ function TodoItem({
   onEdit: (id: number, text: string) => void;
 }) {
   const [isEditing, setIsEditing] = useState(false);
-  const [editText, setEditText] = useState(todo.text);
+  const [editText, setEditText] = useState(todo.title);
 
   const handleEditSubmit = () => {
-    onEdit(todo.id, editText.trim() || todo.text);
+    onEdit(todo.id, editText.trim() || todo.title);
     setIsEditing(false);
   };
 
@@ -25,7 +25,7 @@ function TodoItem({
       <div className="flex items-center gap-2 flex-1">
         <input
           type="checkbox"
-          checked={todo.done}
+          checked={todo.completed}
           onChange={() => onToggle(todo.id)}
           className="w-4 h-4"
         />
@@ -38,8 +38,8 @@ function TodoItem({
             autoFocus
           />
         ) : (
-          <span className={todo.done ? "line-through text-gray-500" : ""}>
-            {todo.text}
+          <span className={todo.completed ? "line-through text-gray-500" : ""}>
+            {todo.title}
           </span>
         )}
       </div>
