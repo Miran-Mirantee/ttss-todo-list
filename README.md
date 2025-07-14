@@ -1,69 +1,54 @@
-# React + TypeScript + Vite
+# Todo List App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Setup and Running Instructions
 
-Currently, two official plugins are available:
+1. **Node.js Version**  
+   Make sure you have Node.js version **20.19+** or **22.12+** installed.  
+   Vite requires Node.js at least 20.19 or 22.12 and above.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+2. **Install dependencies**  
+   Run this command in the project root to install all necessary packages:
+   ```bash
+   npm install
+   ```
+3. **Run the development server**  
+   Start the local dev server with:
+   ```bash
+   npm run dev
+   ```
 
-## Expanding the ESLint configuration
+## View live demo
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+A live deployed version of the app is available here:
+https://ttss-todo-list.vercel.app/
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Tech Stack
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- **React**  
+  Used as the core library for building user interfaces, as required by the assignment.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- **TypeScript**  
+  Included to provide static typing, improve code safety, and enhance the developer experience. Also specified in the assignment requirements.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- **Tailwind CSS**  
+  Chosen for its utility-first approach, which allows rapid styling without writing custom CSS. It speeds up development and reduces the need to name and manage CSS class selectors.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **Vite**  
+  Selected for its fast development performance and modern build system. Vite offers instant startup, lightning-fast hot module replacement (HMR), and a better developer experience compared to older bundlers like Webpack.
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Implementation Choices
+
+- **State Management**  
+  I used React’s built-in `useState` and `useEffect` hooks for simplicity and clarity. Since the app is small and only manages a single piece of shared state (`todos`), using Redux or Context would have been unnecessary overhead.
+
+- **Optimistic UI Updates**  
+  For adding, editing, deleting, and toggling todos, the app updates the UI immediately and performs the API request in the background. This ensures a fast and responsive user experience. Error handling is in place to log any issues in case the server fails.
+
+- **Error and Loading States**  
+  The app handles loading and error states explicitly and displays appropriate UI messages. This helps users understand what’s happening, especially during slow connections or API failures.
+
+- **Component Structure**  
+  Logic is centralized in the main `Todo` component, and individual items are rendered using a separate `TodoItem` component. This separation improves code readability and reusability.
+
+- **Mock API Use**  
+  JSONPlaceholder’s `/todos` endpoint was chosen because it simplifies the implementation of CRUD functionality without setting up a backend. While changes aren’t persisted, the API provides realistic HTTP methods for testing.
